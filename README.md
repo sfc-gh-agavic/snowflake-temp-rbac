@@ -2,6 +2,8 @@
 
 A Streamlit application for managing temporary RBAC grants in Snowflake.
 
+![Temporary RBAC Management System](temp-rbac-screenshot.jpg)
+
 ## Features
 
 ### Core Functionality
