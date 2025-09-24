@@ -1,0 +1,10 @@
+definition_version: 1
+streamlit:
+  name: temp_rbac_app
+  stage: SANDBOX_DB.ADMIN.streamlit_stage  # Alter as needed
+  query_warehouse: BASIC_ADMIN_XS
+  main_file: streamlit_app.py
+  title: "Temporary RBAC Management"
+  database: SANDBOX_DB        # Alter as needed
+  schema: ADMIN               # Alter as needed
+  
