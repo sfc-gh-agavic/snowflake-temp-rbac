@@ -38,35 +38,35 @@ A Streamlit application for managing temporary RBAC grants in Snowflake.
 ## Prerequisites
 
 1. Snowflake account with SECURITYADMIN access
-2. RBAC solution deployed (run `rbac_solution.sql` first)
-3. Snowflake CLI installed and configured
-4. Target database and schema must exist (default: SANDBOX_DB.ADMIN)
-5. Target warehouse must exist (default: BASIC_ADMIN_XS)
+2. Snowflake CLI installed and configured
+3. Target database and schema must exist (eg: SANDBOX_DB.ADMIN)
+4. Target warehouse must exist (eg: BASIC_ADMIN_XS)
 
 ## Deployment
 
 ### Step 1: Deploy RBAC Solution
-1. Review and modify variables in `rbac_solution.sql` if needed:
+1. Review and modify variables in `rbac_solution.sql` as needed:
    - `app_db`: Target database (default: SANDBOX_DB)
    - `app_schema`: Target schema (default: ADMIN)
    - `app_wh`: Target warehouse (default: BASIC_ADMIN_XS)
 
-2. Execute the RBAC solution script with SECURITYADMIN privileges:
+2. Navigate to the project directory:
+   ```bash
+   cd /path/to/temp-rbac
+   ```
+
+3. Execute the RBAC solution script with SECURITYADMIN privileges:
    ```bash
    snow sql -f rbac_solution.sql --role SECURITYADMIN
    ```
 
 ### Step 2: Deploy Streamlit App
-1. Navigate to the project directory:
-   ```bash
-   cd /path/to/temp-rbac
-   ```
 
-2. Review and modify `snowflake.yml` configuration if needed:
+1. Review and modify `snowflake.yml` configuration as needed:
    - Update database, schema, and warehouse settings to match your environment
    - Ensure the stage path matches your target schema
 
-3. Deploy the Streamlit app using Snowflake CLI:
+2. Deploy the Streamlit app using Snowflake CLI:
    ```bash
    snow streamlit deploy --role rbac_app_role
    ```
@@ -76,7 +76,12 @@ A Streamlit application for managing temporary RBAC grants in Snowflake.
    snow streamlit deploy --role rbac_app_role --replace
    ```
 
-4. The app will be deployed to your configured Snowflake account and accessible through the Snowflake web interface.
+3. The app will be deployed to your configured Snowflake account and accessible through the Snowflake web interface.
+
+4. Grant additional users to the application by granting role rbac_app_role
+GRANT ROLE rbac_app_role TO ROLE admin_group;
+GRANT ROLE rbac_app_role TO USER username;
+
 
 ### Troubleshooting Deployment
 
@@ -123,7 +128,6 @@ If you encounter database context errors:
 ## Security Notes
 
 - **Admin Role Protection**: Admin roles (ACCOUNTADMIN, SYSADMIN, SECURITYADMIN, USERADMIN) cannot be granted
-- **Future Scheduling**: All grants must be scheduled at least 5 minutes in the future
 - **Comprehensive Auditing**: All operations are logged with user attribution and timestamps
 - **Input Validation**: Strict regex patterns prevent SQL injection and unauthorized operations
 - **Automated Cleanup**: Scheduled task automatically processes revocations without manual intervention
